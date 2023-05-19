@@ -7,8 +7,6 @@
 #include "board.h"
 
 
-
-
 typedef struct _SingleSourceMovesTreeNode
 {
     Board board;
@@ -25,9 +23,7 @@ typedef struct _SingleSourceMovesTree
 
 
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src);
-SingleSourceMovesTree buildTreeHelper(Board Board, checkersPos *src);
-char findPositon(Board board, checkersPos *src);
-
+void buildTreeHelper(Board *board, SingleSourceMovesTreeNode *node, int row, int col, int is_capturing);
+SingleSourceMovesTreeNode* createNewTNode(Board *board, int row, int col);
 #endif
 
-//test change
