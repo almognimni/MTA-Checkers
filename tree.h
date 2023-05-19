@@ -1,6 +1,9 @@
 #ifndef PROJECT_TREE_H
 #define PROJECT_TREE_H
 
+#define LEFT 0
+#define RIGHT 1
+
 #include "board.h"
 
 
@@ -26,3 +29,5 @@ SingleSourceMovesTree buildTreeHelper(Board Board, checkersPos *src);
 char findPositon(Board board, checkersPos *src);
 
 #endif
+
+//test change

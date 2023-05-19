@@ -1,12 +1,16 @@
 #include "tree.h"
 
+
+
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 {
+    SingleSourceMovesTree movesTree;
+
     char source;
     source = findPositon(board, src);
     if (source != NULL)
     {
-        buildTreeHelper(Board board, checkersPos * src);
+        movesTree.source = buildTreeHelper(Board board, checkersPos * src);
     }
     
 }
@@ -32,7 +36,15 @@ char findPositon(Board board, checkersPos *src)
         return source;
 }
 
-SingleSourceMovesTree buildTreeHelper(Board Board, checkersPos *src, )
+SingleSourceMovesTree buildTreeHelper(Board Board, checkersPos *src)
 {
-    if ()
+    if (source == NULL)
+    {
+        
+    }
+}
+
+struct treeNode* createNewTNode(char source
+{
+
 }
