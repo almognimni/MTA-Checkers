@@ -24,10 +24,6 @@ typedef struct _SingleSourceMovesTree
 }SingleSourceMovesTree;
 
 
-SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src);
-SingleSourceMovesTree buildTreeHelper(Board Board, checkersPos *src);
-char findPositon(Board board, checkersPos *src);
-
 #endif
 
 //test change
