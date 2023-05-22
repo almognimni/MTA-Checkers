@@ -24,25 +24,6 @@ SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
     return tree;
 }
 
-/*
-SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
-{
-//Add base case for null or opossite side
-    SingleSourceMovesTreeNode *node;
-
-    if (row < 0 || row >= 8 || col < 0 || col >= 8)
-    {
-        return NULL;
-    }
-    else if (board[row][col] == ' ')
-    {
-        node = createNewTNode(board, row, col, totalCaptures);
-        return node;
-    }
-
-        node = createNewTNode(board, row, col, totalCaptures);
-        return node;
-}*/
 
 SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
 {
@@ -53,34 +34,36 @@ SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, u
     {
         return NULL;
     }
-    if(board[row][col] == ' ')
+
+        node = createNewTNode(board, row, col, totalCaptures);
 
         switch (sourceSide)
         {
             case B:
-                if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T')) //LEFT
+                if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T') && (board[row - 2][col - 2] != ' ')) //LEFT
                 {
                     node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
                 }
-                if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T')) //RIGHT
+                if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T') && (board[row - 2][col + 2] != ' ')) //RIGHT
                 {
                     node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
                 }
                 break;
 
             case T:
-                if ((isInRange(row, col)) && (board[row + 1][col + 1] == 'B')) //LEFT (By it's perspective)
+                if ((isInRange(row, col)) && (board[row + 1][col + 1] == 'B') && (board[row + 2][col + 1] != ' ')) //LEFT (By it's perspective)
                 {
                     node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, totalCaptures + 1);
                 }
-                if ((isInRange(row, col)) && (board[row + 1][col - 1] == 'B')) //RIGHT (By it's perspective)
+                if ((isInRange(row, col)) && (board[row + 1][col - 1] == 'B') && (board[row + 2][col - 2] != ' ')) //RIGHT (By it's perspective)
                 {
                     node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, totalCaptures + 1);
                 }
                 break;
-        }
 
-    node = createNewTNode(board, row, col, totalCaptures);
+            default:
+                printf("If printed - switch has uncovered case");
+        }
     return node;
 }
 
@@ -108,7 +91,7 @@ SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigne
 
 void printTreeInorder(SingleSourceMovesTree tr)
 {
-    printTreeHelper(tr.root);
+    printTreeHelper(tr.source);
     printf("\n");
 }
 
@@ -133,7 +116,23 @@ bool isInRange(int row, int col)
         return true;
 }
 
-bool canMove(){
-
-}
-
+//bool canMove(Board board, int row, int col, int sourceSide, int direction) //TIDY later
+//{
+//    switch(sourceSide)
+//    {
+//        case B:
+//            switch(direction)
+//            {
+//                case LEFT:
+//                    if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T'))
+//                        return true;
+//                    else
+//                        return false;
+//                    break;
+//                case RIGHT:
+//                    if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T') && (board[row - 2][col + 2] != ' '))
+//            }
+//    }
+//}
+//
+// ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T'))
