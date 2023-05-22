@@ -1,4 +1,5 @@
 #include "tree.h"
+#include "board.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,24 +13,19 @@
 
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 {
-    int totalCapturesSoFar = 0;
+    unsigned short totalCapturesSoFar = 0;
 
     SingleSourceMovesTree *tree;
     tree = malloc(sizeof(SingleSourceMovesTree));
 
     int sourceSide = isBorT(board, src->row, src->col);
 
-    if(board[src->row][src->col] == ' ')
-        return NULL;
-
-    else
-    {
-        tree->source = buildTreeHelper(board, src->row, src->col, sourceSide, &totalCapturesSoFar);
-        return tree;
-    }
+    tree->source = buildTreeHelper(board, src->row, src->col, sourceSide, &totalCapturesSoFar);
+    return tree;
 }
 
-SingleSourceMovesTreeNode* buildTreeHelper(Board *board, int row, int col, int sourceSide, int* totalCaptures) //isNodeParamNeeded
+/*
+SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
 {
 //Add base case for null or opossite side
     SingleSourceMovesTreeNode *node;
@@ -44,32 +40,49 @@ SingleSourceMovesTreeNode* buildTreeHelper(Board *board, int row, int col, int s
         return node;
     }
 
+        node = createNewTNode(board, row, col, totalCaptures);
+        return node;
+}*/
 
-    if (isBorT(board, row, col) == B)
+SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
+{
+//Add base case for null or opposite side
+    SingleSourceMovesTreeNode *node;
+
+    if (isInRange(row, col) == false)
     {
-        if (board[row - 1][col - 1] == 'T') //LEFT
-        {
-        node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
-        }
-        if (board[row - 1][col + 1] == 'T') //RIGHT
-        {
-        node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
-        }
+        return NULL;
     }
-    else //Source is T
-    {
-        if (board[row + 1][col + 1] == 'T') //LEFT
+    if(board[row][col] == ' ')
+
+        switch (sourceSide)
         {
-        node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, totalCaptures + 1);
+            case B:
+                if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T')) //LEFT
+                {
+                    node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
+                }
+                if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T')) //RIGHT
+                {
+                    node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
+                }
+                break;
+
+            case T:
+                if ((isInRange(row, col)) && (board[row + 1][col + 1] == 'B')) //LEFT (By it's perspective)
+                {
+                    node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, totalCaptures + 1);
+                }
+                if ((isInRange(row, col)) && (board[row + 1][col - 1] == 'B')) //RIGHT (By it's perspective)
+                {
+                    node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, totalCaptures + 1);
+                }
+                break;
         }
-        if (board[row + 1][col - 1] == 'T') //RIGHT
-        {
-        node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, totalCaptures + 1);
-        }
-    }
-    
+
+    node = createNewTNode(board, row, col, totalCaptures);
+    return node;
 }
-
 
 int isBorT(Board board, int row, int col)
 {
@@ -83,11 +96,44 @@ int isBorT(Board board, int row, int col)
     }
 }
 
-SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short total_captures_so_far)
+SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short *total_captures_so_far)
 {
     SingleSourceMovesTreeNode *res;
-    res->board = board; //???
-    res->total_captures_so_far = total_captures_so_far;
+    memcpy(res->board, board, BOARD_SIZE); //???
+    res->total_captures_so_far = *(total_captures_so_far);
     res->pos->row = row;
     res->pos->col = col;
 }
+
+
+void printTreeInorder(SingleSourceMovesTree tr)
+{
+    printTreeHelper(tr.root);
+    printf("\n");
+}
+
+void printTreeHelper(SingleSourceMovesTreeNode *root)
+{
+    if (root == NULL)
+        return;
+    else
+    {
+        printTreeHelper(root->next_moves[0]);
+        printf("%d ", root->data);
+        printTreeHelper(root->next_moves[1]);
+    }
+}
+
+
+bool isInRange(int row, int col)
+{
+    if (row < 0 || row >= 8 || col < 0 || col >= 8)
+        return false;
+    else
+        return true;
+}
+
+bool canMove(){
+
+}
+
