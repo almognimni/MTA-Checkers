@@ -1,0 +1,17 @@
+
+#ifndef PROJECT2_GENERAL_H
+#define PROJECT2_GENERAL_H
+
+#include "board.h"
+#include "tree.h"
+#include "lists.h"
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+void checkMemoryAllocationPos(checkersPos *pos);
+
+#endif

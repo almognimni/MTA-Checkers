@@ -6,6 +6,11 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#include "board.h"
+#include "tree.h"
+#include "lists.h"
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +18,22 @@
 
 int main()
 {
-    int a = 5;
+    Board board;
+    checkersPos *src;
+
+    SingleSourceMovesTree *tree;
+
+    src = (checkersPos*)malloc(sizeof (checkersPos));
+
+    src->row = 'F';
+    src->col = '1';
+
+    initializeBoard(board);
+    //printBoard(board);
+
+    tree = FindSingleSourceMoves(board, src);
+    printTreeInorder(tree);
+
 
 }
 

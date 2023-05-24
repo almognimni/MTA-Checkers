@@ -1,31 +1,34 @@
 #include "tree.h"
 #include "board.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
 #define B 0
 #define T 1
+
+
 #define LEFT 0
 #define RIGHT 1
 
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 {
+    int row = 0, col = 0;
+    getIndex(src,&row,&col);
+
     unsigned short totalCapturesSoFar = 0;
 
     SingleSourceMovesTree *tree;
     tree = malloc(sizeof(SingleSourceMovesTree));
 
-    int sourceSide = isBorT(board, src->row, src->col);
+    int sourceSide = isBorT(board, row, col);
 
-    tree->source = buildTreeHelper(board, src->row, src->col, sourceSide, &totalCapturesSoFar);
+    tree->source = buildTreeHelper(board, row, col, sourceSide, &totalCapturesSoFar);
     return tree;
 }
 
 
-SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
+
+
+/*
+SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
 {
 //Add base case for null or opposite side
     SingleSourceMovesTreeNode *node;
@@ -35,6 +38,10 @@ SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, u
         return NULL;
     }
 
+    if(board[row][col] == " ")
+    {
+
+    }
         node = createNewTNode(board, row, col, totalCaptures);
 
         switch (sourceSide)
@@ -63,35 +70,110 @@ SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, u
 
             default:
                 printf("If printed - switch has uncovered case");
+                return NULL;
         }
+    return node;
+}*/
+
+
+//chat
+SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures)
+{
+    SingleSourceMovesTreeNode *node;
+
+    if (isInRange(row, col) == false)
+    {
+        return NULL;
+    }
+
+
+    node = createNewTNode(board, row, col, totalCaptures);
+
+    switch (sourceSide)
+    {
+        case B:
+            // Capture moves
+            if (isInRange(row - 2, col - 2) && board[row - 1][col - 1] == 'T' && board[row - 2][col - 2] == ' ')
+            {
+                node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
+            }
+            if (isInRange(row - 2, col + 2) && board[row - 1][col + 1] == 'T' && board[row - 2][col + 2] == ' ')
+            {
+                node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
+            }
+                // Regular moves
+            else if (isInRange(row - 1, col - 1) && board[row - 1][col - 1] == ' ')
+            {
+                node->next_moves[LEFT] = buildTreeHelper(board, row - 1, col - 1, sourceSide, totalCaptures);
+            }
+            else if (isInRange(row - 1, col + 1) && board[row - 1][col + 1] == ' ')
+            {
+                node->next_moves[RIGHT] = buildTreeHelper(board, row - 1, col + 1, sourceSide, totalCaptures);
+            }
+            break;
+
+        case T:
+            // Capture moves
+            if (isInRange(row + 2, col + 2) && board[row + 1][col + 1] == 'B' && board[row + 2][col + 2] == ' ')
+            {
+                node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, totalCaptures + 1);
+            }
+            if (isInRange(row + 2, col - 2) && board[row + 1][col - 1] == 'B' && board[row + 2][col - 2] == ' ')
+            {
+                node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, totalCaptures + 1);
+            }
+                // Regular moves
+            else if (isInRange(row + 1, col + 1) && board[row + 1][col + 1] == ' ')
+            {
+                node->next_moves[LEFT] = buildTreeHelper(board, row + 1, col + 1, sourceSide, totalCaptures);
+            }
+            else if (isInRange(row + 1, col - 1) && board[row + 1][col - 1] == ' ')
+            {
+                node->next_moves[RIGHT] = buildTreeHelper(board, row + 1, col - 1, sourceSide, totalCaptures);
+            }
+            break;
+
+        default:
+            printf("If printed - switch has uncovered case");
+            return NULL;
+    }
+
     return node;
 }
 
-int isBorT(Board board, int row, int col)
-{
-    if (board[row][col] == 'B') //is string or char
-    {
-        return B;
-    }
-    else if (board[row][col] == 'T')
-    {
-        return T;
-    }
-}
+
 
 SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short *total_captures_so_far)
 {
     SingleSourceMovesTreeNode *res;
-    memcpy(res->board, board, BOARD_SIZE); //???
+    res = (SingleSourceMovesTreeNode*) malloc(sizeof (SingleSourceMovesTreeNode));
+    checkMemoryAllocationTree(res);
+
+    memcpy(res->board, board, sizeof(board)); //???
     res->total_captures_so_far = *(total_captures_so_far);
-    res->pos->row = row;
-    res->pos->col = col;
+
+    res->pos = (checkersPos*) malloc (sizeof (checkersPos));
+    res->pos->row = (char)(row + 'A'); // create function
+    res->pos->col = (char)(col + '1'); //likewise
+
+    res->next_moves[LEFT] = NULL;
+    res->next_moves[RIGHT] = NULL;
+
+    return res;
 }
 
-
-void printTreeInorder(SingleSourceMovesTree tr)
+void checkMemoryAllocationTree(SingleSourceMovesTreeNode *treeNode)
 {
-    printTreeHelper(tr.source);
+    if (treeNode == NULL)
+    {
+        printf("Memory allocation error!!!\n");
+        exit(1);
+    }
+}
+
+void printTreeInorder(SingleSourceMovesTree *tr)
+{
+    printTreeHelper(tr->source);
     printf("\n");
 }
 
@@ -101,20 +183,14 @@ void printTreeHelper(SingleSourceMovesTreeNode *root)
         return;
     else
     {
-        printTreeHelper(root->next_moves[0]);
-        printf("%d ", root->data);
-        printTreeHelper(root->next_moves[1]);
+        printTreeHelper(root->next_moves[LEFT]);
+        printf(" %c%c ", root->pos->row, root->pos->col); //add captures
+        printTreeHelper(root->next_moves[RIGHT]);
     }
 }
 
 
-bool isInRange(int row, int col)
-{
-    if (row < 0 || row >= 8 || col < 0 || col >= 8)
-        return false;
-    else
-        return true;
-}
+
 
 //bool canMove(Board board, int row, int col, int sourceSide, int direction) //TIDY later
 //{

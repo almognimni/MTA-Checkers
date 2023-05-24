@@ -1,11 +1,20 @@
 #ifndef PROJECT_TREE_H
 #define PROJECT_TREE_H
 
+#include "board.h"
+#include "stdbool.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define B 0
+#define T 1
+
 #define LEFT 0
 #define RIGHT 1
 
-#include "board.h"
-#include "stdbool.h"
 
 /* Data structs */
 typedef struct _SingleSourceMovesTreeNode
@@ -23,13 +32,18 @@ typedef struct _SingleSourceMovesTree
 }SingleSourceMovesTree;
 
 /*Functions*/
+SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src);
 SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short *total_captures_so_far);
-int isBorT(Board board, int row, int col);
 SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
+
+void checkMemoryAllocationTree(SingleSourceMovesTreeNode *treeNode);
+
 void printTreeHelper(SingleSourceMovesTreeNode *root);
-void printTreeInorder(SingleSourceMovesTree tr);
-bool isInRange(int row, int col);
-SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
+void printTreeInorder(SingleSourceMovesTree *tr);
+
+
+
+//SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
 //isNodeParamNeeded
 #endif
 
