@@ -1,9 +1,6 @@
 #include "board.h"
 
 
-
-
-
 void initializeBoard(Board board)
 {
     int i, j;

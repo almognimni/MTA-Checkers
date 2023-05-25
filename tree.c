@@ -22,10 +22,8 @@ SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 
     tree->source = buildTreeHelper(board, row, col, sourceSide, &totalCapturesSoFar);
     return tree;
+
 }
-
-
-
 
 /*
 SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
@@ -102,13 +100,15 @@ SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int so
                 node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
             }
                 // Regular moves
-            else if (isInRange(row - 1, col - 1) && board[row - 1][col - 1] == ' ')
-            {
-                node->next_moves[LEFT] = buildTreeHelper(board, row - 1, col - 1, sourceSide, totalCaptures);
-            }
-            else if (isInRange(row - 1, col + 1) && board[row - 1][col + 1] == ' ')
-            {
-                node->next_moves[RIGHT] = buildTreeHelper(board, row - 1, col + 1, sourceSide, totalCaptures);
+                if (isInRange(row - 1, col - 1) && board[row - 1][col - 1] == ' ')
+                {
+                    //node->next_moves[LEFT] = buildTreeHelper(board, row - 1, col - 1, sourceSide, totalCaptures);
+                    node->next_moves[LEFT] = createNewTNode(board, row - 1, col - 1, totalCaptures);
+                }
+                if (isInRange(row - 1, col + 1) && board[row - 1][col + 1] == ' ') {
+                    //node->next_moves[RIGHT] = buildTreeHelper(board, row - 1, col + 1, sourceSide, totalCaptures);
+                    node->next_moves[RIGHT] = createNewTNode(board, row - 1, col + 1, totalCaptures);
+                }
             }
             break;
 
