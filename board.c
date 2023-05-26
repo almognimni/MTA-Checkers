@@ -37,6 +37,16 @@ void printBoard(Board board)
     }
 }
 
+void checkMemoryAllocationPos(checkersPos *pos)
+{
+    if (pos == NULL)
+    {
+        printf("Memory allocation error!!!\n");
+        exit(1);
+    }
+}
+
+
 void getIndex(checkersPos *src, int *row, int *col)
 {
     *row = (src->row - 'A');
@@ -48,9 +58,7 @@ int isBorT(Board board, int row, int col)
     if (board[row][col] == 'B') //is string or char
     {
         return B;
-    }
-    else if (board[row][col] == 'T')
-    {
+    } else if (board[row][col] == 'T') {
         return T;
     }
 }

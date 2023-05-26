@@ -43,7 +43,6 @@ void printTreeInorder(SingleSourceMovesTree *tr);
 
 
 
-//SingleSourceMovesTreeNode* test(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
-//isNodeParamNeeded
+
 #endif
 

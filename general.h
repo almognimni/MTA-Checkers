@@ -6,12 +6,11 @@
 #include "tree.h"
 #include "lists.h"
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-void checkMemoryAllocationPos(checkersPos *pos);
 
+int max(int a, int b);
 #endif

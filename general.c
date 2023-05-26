@@ -1,10 +1,9 @@
 #include "general.h"
 
-void checkMemoryAllocationPos(checkersPos *pos)
+
+
+
+int max(int a, int b)
 {
-    if (pos == NULL)
-    {
-        printf("Memory allocation error!!!\n");
-        exit(1);
-    }
+    return a > b ? a : b;
 }

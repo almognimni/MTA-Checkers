@@ -25,13 +25,18 @@ int main()
 
     src = (checkersPos*)malloc(sizeof (checkersPos));
 
-    src->row = 'F';
-    src->col = '1';
+    src->row = 'C';
+    src->col = '2';
 
     initializeBoard(board);
     //printBoard(board);
 
     tree = FindSingleSourceMoves(board, src);
+
+    SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree);
+
+    printList(testList);
+
     printTreeInorder(tree);
 
 

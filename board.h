@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define BOARD_SIZE 8
 
@@ -26,6 +27,7 @@ void printBoard(Board board);
 void getIndex(checkersPos *src, int *row, int *col);
 int isBorT(Board board, int row, int col);
 bool isInRange(int row, int col);
+void checkMemoryAllocationPos(checkersPos *pos);
 
 #endif
 //betty

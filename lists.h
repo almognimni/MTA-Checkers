@@ -37,4 +37,16 @@ typedef struct _multipleSourceMovesList
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
 MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player);
 
+void makeEmptyList(SingleSourceMovesList *lst);
+void checkMemoryAllocation(SingleSourceMovesListCell * listCell);
+void checkMemoryAllocationList(SingleSourceMovesList * listCell);
+
+SingleSourceMovesListCell *createNewListNode(SingleSourceMovesTreeNode *treeNode, SingleSourceMovesListCell *next);
+void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *treeNode);
+void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell *tail);
+bool isEmptyList(SingleSourceMovesList * lst);
+void printList(SingleSourceMovesList *list);
+
+SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
+void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
 #endif
