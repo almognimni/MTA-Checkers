@@ -146,6 +146,40 @@ void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMove
         }
     }
 }
+
+MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
+{
+    MultipleSourceMovesList **currentPlayerMovesList;
+    checkersPos *src;
+
+    int countPlayersPieces = 0;
+
+    currentPlayerMovesList = (MultipleSourceMovesList **) malloc (sizeof (MultipleSourceMovesList *) * STARTING_PIECES);
+    checkMemoryAllocationList(currentPlayerMovesList);
+
+    SingleSourceMovesTree *sourceMovesTree;
+
+    for(int i = 0; i < BOARD_SIZE; i++)
+    {
+        src->row = i;
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            src->col = j;
+            sourceMovesTree = FindSingleSourceMoves(board, src);
+
+            if('B' == player)
+            {
+                currentPlayerMovesList[countPlayersPieces]->head = FindSingleSourceOptimalMove(sourceMovesTree);
+                countPlayersPieces++;
+            }
+
+        }
+    }
+    currentPlayerMovesList = realloc(currentPlayerMovesList, countPlayersPieces);
+    return currentPlayerMovesList; //Free list int main
+
+}
+
 //
 //void freeNode(SingleSourceMovesListCell* node)
 //{

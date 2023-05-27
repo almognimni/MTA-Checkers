@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define BOARD_SIZE 8
-
+#define STARTING_PIECES 12//MAX_PIECES_OF_PLAYERS 12
 #define B 0
 #define T 1
 

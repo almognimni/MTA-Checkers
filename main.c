@@ -27,7 +27,6 @@ int main()
 
     src->row = 'C';
     src->col = '2';
-
     initializeBoard(board);
     //printBoard(board);
 
