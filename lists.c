@@ -167,10 +167,9 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
             src->col = j;
             sourceMovesTree = FindSingleSourceMoves(board, src);
 
-            if('B' == player)
+            if(board[i][j] == player)
             {
-                currentPlayerMovesList[countPlayersPieces]->head = FindSingleSourceOptimalMove(sourceMovesTree);
-                countPlayersPieces++;
+                insertDataToEndList2(currentPlayerMovesList,FindSingleSourceOptimalMove(sourceMovesTree) );
             }
 
         }
@@ -180,6 +179,42 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 
 }
 
+
+
+void insertDataToEndList2(MultipleSourceMovesListCell *dest, SingleSourceMovesList *inserted)
+{
+    MultipleSourceMovesListCell *newTail;
+    newTail = createNewListNode2(inserted, NULL);
+    insertNodeToEndList2(dest, newTail);
+}
+
+
+MultipleSourceMovesListCell *createNewListNode2(SingleSourceMovesList *insertedList, MultipleSourceMovesListCell *next)
+{
+    MultipleSourceMovesListCell * res;
+
+    res = (MultipleSourceMovesListCell*) malloc (sizeof(MultipleSourceMovesListCell));
+    checkMemoryAllocation(res);
+
+    res->single_source_moves_list = insertedList;
+    res->next = next;
+
+    return res;
+}
+
+
+void insertNodeToEndList2(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail)
+{
+    if (isEmptyList(lst) == true)
+        lst->head = lst->tail = newTail;
+
+    else
+    {
+        lst->tail->next = newTail;
+        lst->tail = newTail;
+    }
+    newTail->next = NULL;
+}
 //
 //void freeNode(SingleSourceMovesListCell* node)
 //{

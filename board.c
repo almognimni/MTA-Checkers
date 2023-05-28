@@ -22,25 +22,25 @@ void initializeBoard(Board board)
 
 void printBoard(Board board)
 {
-    int i = 0;
-    int j = 0;
-    char lines = 'A';
+    int i, j;
+    char line = 'A';
 
-    printf("\n");
-    printf("+-+-+-+-+-+-+-+-+-+\n+ |1|2|3|4|5|6|7|8|\n");
+    printf("\n+-+-+-+-+-+-+-+-+-+\n+ |1|2|3|4|5|6|7|8|\n");
 
     for (i = 0; i < BOARD_SIZE; i++)
     {
         printf("+-+-+-+-+-+-+-+-+-+\n");
-        printf("|%c", lines);
-        lines++;
+
+        printf("|%c", line);
+        line++;
+
         for (j = 0; j < BOARD_SIZE; j++)
         {
             printf("|%c", board[i][j]);
         }
 
-        printf("|");
-        printf("\n");
+        printf("|\n");
+
     }
     printf("+-+-+-+-+-+-+-+-+-+");
 }

@@ -49,4 +49,8 @@ void printList(SingleSourceMovesList *list);
 
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
 void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
+
+MultipleSourceMovesListCell *createNewListNode2(SingleSourceMovesList *listCell, MultipleSourceMovesListCell *next);
+void insertDataToEndList2(MultipleSourceMovesListCell *dest, SingleSourceMovesList *inserted);
+void insertNodeToEndList2(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail);
 #endif
