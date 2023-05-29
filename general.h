@@ -4,7 +4,7 @@
 
 #include "board.h"
 #include "tree.h"
-#include "lists.h"
+#include "list.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -147,75 +147,21 @@ void printTreeHelper(SingleSourceMovesTreeNode *root)
 }
 
 
-
-
-//bool canMove(Board board, int row, int col, int sourceSide, int direction) //TIDY later
-//{
-//    switch(sourceSide)
-//    {
-//        case B:
-//            switch(direction)
-//            {
-//                case LEFT:
-//                    if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T'))
-//                        return true;
-//                    else
-//                        return false;
-//                    break;
-//                case RIGHT:
-//                    if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T') && (board[row - 2][col + 2] != ' '))
-//            }
-//    }
-//}
-//
-// ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T'))
-
-
-/*
-SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures) //isNodeParamNeeded
+// free all memory of a tree
+void freeTree(SingleSourceMovesTree * tr)
 {
-//Add base case for null or opposite side
-    SingleSourceMovesTreeNode *node;
-SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCapturesL,  unsigned short* totalCapturesR)
+    freeTreeHelper(tr->source);
+    tr->source = NULL;
+}
 
-    if (isInRange(row, col) == false)
+void freeTreeHelper(SingleSourceMovesTreeNode *root)
+{
+    if (root == NULL)
+        return;
+    else
     {
-        return NULL;
+        freeTreeHelper(root->next_moves[LEFT]);
+        freeTreeHelper(root->next_moves[RIGHT]);
+        free (root);
     }
-
-    if(board[row][col] == " ")
-    {
-
-    }
-        node = createNewTNode(board, row, col, totalCaptures);
-
-        switch (sourceSide)
-        {
-            case B:
-                if ((isInRange(row, col)) && (board[row - 1][col - 1] == 'T') && (board[row - 2][col - 2] != ' ')) //LEFT
-                {
-                    node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
-                }
-                if ((isInRange(row, col)) && (board[row - 1][col + 1] == 'T') && (board[row - 2][col + 2] != ' ')) //RIGHT
-                {
-                    node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, totalCaptures + 1);
-                }
-                break;
-
-            case T:
-                if ((isInRange(row, col)) && (board[row + 1][col + 1] == 'B') && (board[row + 2][col + 1] != ' ')) //LEFT (By it's perspective)
-                {
-                    node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, totalCaptures + 1);
-                }
-                if ((isInRange(row, col)) && (board[row + 1][col - 1] == 'B') && (board[row + 2][col - 2] != ' ')) //RIGHT (By it's perspective)
-                {
-                    node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, totalCaptures + 1);
-                }
-                break;
-
-            default:
-                printf("If printed - switch has uncovered case");
-                return NULL;
-        }
-    return node;
-}*/
+}

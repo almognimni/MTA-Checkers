@@ -8,7 +8,7 @@
 
 #include "board.h"
 #include "tree.h"
-#include "lists.h"
+#include "list.h"
 
 
 #include <stdio.h>
@@ -34,10 +34,13 @@ int main()
 
     SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree);
 
-    printList(testList);
+    //printList(testList);
+
+    MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T');
+
+    printMultiList(multiList);
 
     printTreeInorder(tree);
-
 
 }
 

@@ -49,8 +49,12 @@ void printList(SingleSourceMovesList *list);
 
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
 void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
+void printMultiList(MultipleSourceMovesList *MList);
 
-MultipleSourceMovesListCell *createNewListNode2(SingleSourceMovesList *listCell, MultipleSourceMovesListCell *next);
-void insertDataToEndList2(MultipleSourceMovesListCell *dest, SingleSourceMovesList *inserted);
-void insertNodeToEndList2(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail);
+void makeEmptyMultiList(MultipleSourceMovesList *lst);
+bool isEmptyMultiList(MultipleSourceMovesList *lst);
+
+void insertListToEndMultiList(MultipleSourceMovesList **dest, SingleSourceMovesList *inserted);
+MultipleSourceMovesListCell *createNewMultiListNode(SingleSourceMovesList *listCell, MultipleSourceMovesListCell *next);
+void insertNodeToEndMultiList(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail);
 #endif
