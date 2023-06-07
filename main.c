@@ -16,6 +16,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+
 int main()
 {
     Board board;
@@ -32,15 +33,14 @@ int main()
 
     tree = FindSingleSourceMoves(board, src);
 
-    SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree);
+    SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree); //Question 2
 
-    //printList(testList);
+    printList(testList);
 
-    MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T');
+    //MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T'); //Question 3
 
-    printMultiList(multiList);
+    //printMultiList(multiList);
 
     printTreeInorder(tree);
-
 }
 

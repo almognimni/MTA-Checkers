@@ -66,6 +66,45 @@ void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMove
 }
 
 
+///Single
+void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *treeNode)
+{
+    SingleSourceMovesListCell *newTail;
+    newTail = createNewListNode(treeNode, NULL);
+    insertNodeToEndList(lst, newTail);
+}
+
+SingleSourceMovesListCell* createNewListNode(SingleSourceMovesTreeNode *treeNode, SingleSourceMovesListCell *next)
+{
+    SingleSourceMovesListCell * res;
+
+    res = (SingleSourceMovesListCell*) malloc (sizeof(SingleSourceMovesListCell));
+    checkMemoryAllocation(res);
+
+    res->captures = treeNode->total_captures_so_far;
+    res->position = treeNode->pos;
+    res->next = next;
+
+    return res;
+}
+
+void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell *tail)
+{
+    if (lst == NULL)
+        return;
+
+    if (isEmptyList(lst) == true)
+        lst->head = lst->tail = tail;
+
+    else
+    {
+        lst->tail->next = tail;
+        lst->tail = tail;
+    }
+    tail->next = NULL;
+}
+
+
 //Question3
 MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 {
@@ -104,43 +143,7 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 
 }
 
-void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *treeNode)
-{
-    SingleSourceMovesListCell *newTail;
-    newTail = createNewListNode(treeNode, NULL);
-    insertNodeToEndList(lst, newTail);
-}
-
-SingleSourceMovesListCell* createNewListNode(SingleSourceMovesTreeNode *treeNode, SingleSourceMovesListCell *next)
-{
-    SingleSourceMovesListCell * res;
-
-    res = (SingleSourceMovesListCell*) malloc (sizeof(SingleSourceMovesListCell));
-    checkMemoryAllocation(res);
-
-    res->captures = treeNode->total_captures_so_far;
-    res->position = treeNode->pos;
-    res->next = next;
-
-    return res;
-}
-
-void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell *tail)
-{
-    if (lst == NULL)
-        return;
-
-    if (isEmptyList(lst) == true)
-        lst->head = lst->tail = tail;
-
-    else
-    {
-        lst->tail->next = tail;
-        lst->tail = tail;
-    }
-    tail->next = NULL;
-}
-
+///////Multi
 void insertListToEndMultiList(MultipleSourceMovesList **dest, SingleSourceMovesList *inserted)
 {
     MultipleSourceMovesListCell *newTail;
@@ -148,7 +151,7 @@ void insertListToEndMultiList(MultipleSourceMovesList **dest, SingleSourceMovesL
     insertNodeToEndMultiList(dest, newTail);
 }
 
-MultipleSourceMovesListCell *createNewListNode2(SingleSourceMovesList *insertedList, MultipleSourceMovesListCell *next)
+MultipleSourceMovesListCell *createNewMultiListNode(SingleSourceMovesList *insertedList, MultipleSourceMovesListCell *next)
 {
     MultipleSourceMovesListCell * res;
 
@@ -163,7 +166,7 @@ MultipleSourceMovesListCell *createNewListNode2(SingleSourceMovesList *insertedL
 
 void insertNodeToEndMultiList(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail)
 {
-    if (isEmptyList(lst) == true)
+    if (isEmptyMultiList(lst) == true)
         lst->head = lst->tail = newTail;
 
     else
