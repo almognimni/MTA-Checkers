@@ -1,5 +1,6 @@
 #include "general.h"
 
+
 //Question 4
 void turn(Board board, Player player)
 {
@@ -13,9 +14,17 @@ void turn(Board board, Player player)
     MultipleSourceMovesListCell *current;
     current = possibleMoves->head;
 
-    while(current != NULL)
+    chosenList = current->single_source_moves_list;
+
+    if(current->next == NULL)
     {
-        contender = current->single_source_moves_list;
+        executeMove(board, current, player);
+        return;
+    }
+
+    while(current->next != NULL)
+    {
+        contender = current->next->single_source_moves_list;
         currentLenght = contender->tail->captures;
 
          if(currentLenght > longestMoves)
@@ -42,7 +51,7 @@ void executeMove(Board board, SingleSourceMovesList* executedMove, Player player
     startingPos = executedMove->head->position;
     endingPos = executedMove->tail->position;
 
-    board[startingPos->row][startingPos->col] = ' ';
+    board[startingPos->row - 'A'][startingPos->col - '1'] = ' '; // delete the peice from its starting source
 
     while(current->next != NULL)
     {
@@ -54,13 +63,13 @@ void executeMove(Board board, SingleSourceMovesList* executedMove, Player player
 
         current = current->next;
     }
-    board[endingPos->row][endingPos->col] = player;
+    board[endingPos->row -'A'][endingPos->col -'1'] = player;
 }
 
 
 void capture(Board board, checkersPos *current, checkersPos *next)
 {
-    char capturedRow, capturedCol, currentCol, currentRow, nextRow, nextCol;
+    int capturedRow, capturedCol, currentCol, currentRow, nextRow, nextCol;
 
     getIndex(current, &currentRow, &currentCol);
     getIndex(next, &nextRow, &nextCol);
@@ -68,7 +77,7 @@ void capture(Board board, checkersPos *current, checkersPos *next)
     capturedRow = (currentRow + nextRow) / 2;
     capturedCol = (currentCol + nextCol) / 2;
 
-    board[currentRow][currentCol] = ' ';
+    board[capturedRow][capturedCol] = ' ';
 }
 
 

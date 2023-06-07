@@ -42,7 +42,7 @@ void printBoard(Board board)
         printf("|\n");
 
     }
-    printf("+-+-+-+-+-+-+-+-+-+");
+    printf("+-+-+-+-+-+-+-+-+-+\n");
 }
 
 void checkMemoryAllocationPos(checkersPos *pos)
@@ -66,7 +66,9 @@ int isBorT(Board board, int row, int col)
     if (board[row][col] == 'B') //is string or char
     {
         return B;
-    } else if (board[row][col] == 'T') {
+    }
+    else if (board[row][col] == 'T')
+    {
         return T;
     }
 }

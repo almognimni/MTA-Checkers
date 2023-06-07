@@ -9,6 +9,7 @@
 #include "board.h"
 #include "tree.h"
 #include "list.h"
+#include "general.h"
 
 
 #include <stdio.h>
@@ -33,14 +34,18 @@ int main()
 
     tree = FindSingleSourceMoves(board, src);
 
-    SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree); //Question 2
+    //SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree); //Question 2
+    //printTreeInorder(tree);
 
-    printList(testList);
+    //printList(testList);
 
-    //MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T'); //Question 3
-
+    MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T'); //Question 3
     //printMultiList(multiList);
 
-    printTreeInorder(tree);
+    turn(board, 'T');
+    printBoard(board);
+
+
+
 }
 

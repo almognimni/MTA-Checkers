@@ -129,7 +129,6 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
         for (int j = 0; j < BOARD_SIZE; j++)
         {
             src->col = j + '1';
-            sourceMovesTree = FindSingleSourceMoves(board, src);
 
             if(board[i][j] == player)
             {
@@ -140,7 +139,6 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
     //currentPlayerMovesList = realloc(currentPlayerMovesList,  sizeof(MultipleSourceMovesList*) * countPlayersPieces);
     //add free position
     return currentPlayerMovesList; //Free list in main
-
 }
 
 ///////Multi
@@ -184,7 +182,7 @@ void printList(SingleSourceMovesList *list)
 
     while (res != NULL)
     {
-        printf("%c%c <> %d \n", res->position->row ,res->position->col, res->captures );
+        printf("%c%c <> %d", res->position->row ,res->position->col, res->captures );
         res = res->next;
     }
 }
@@ -196,8 +194,11 @@ void printMultiList(MultipleSourceMovesList *MList)
     while (curr != NULL)
     {
         printList(curr->single_source_moves_list);
+        printf("\n");
         curr = curr->next;
+
     }
+    printf("\n");
 }
 
 void makeEmptyList(SingleSourceMovesList *lst)
