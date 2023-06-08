@@ -11,39 +11,38 @@
 #include "list.h"
 #include "general.h"
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
+#define STARTING_PLAYER 'T'
+
+int highestCaptures = 0;
+char highestCapturesPlayer = '0';
+int totalMovesT = 0;
+int totalMovesB = 0;
 
 int main()
 {
     Board board;
-    checkersPos *src;
 
-    SingleSourceMovesTree *tree;
+    Player startingPlayer = STARTING_PLAYER;
 
-    src = (checkersPos*)malloc(sizeof (checkersPos));
-
-    src->row = 'C';
-    src->col = '2';
     initializeBoard(board);
-    //printBoard(board);
 
-    tree = FindSingleSourceMoves(board, src);
+    PlayGame(board, startingPlayer);
+
+//    tree = FindSingleSourceMoves(board, src);
 
     //SingleSourceMovesList *testList = FindSingleSourceOptimalMove(tree); //Question 2
     //printTreeInorder(tree);
 
     //printList(testList);
 
-    MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T'); //Question 3
+//    MultipleSourceMovesList *multiList = FindAllPossiblePlayerMoves(board, 'T'); //Question 3
     //printMultiList(multiList);
 
-    turn(board, 'T');
-    printBoard(board);
 
 
 
