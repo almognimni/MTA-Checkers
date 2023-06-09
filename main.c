@@ -2,7 +2,7 @@
 //ID: 319090593
 
 //Betty Halmish
-//Id: 209363555
+//ID: 209363555
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define STARTING_PLAYER 'T'
+#define STARTING_PLAYER 'B'
 
 int highestCaptures = 0;
 char highestCapturesPlayer = '0';
