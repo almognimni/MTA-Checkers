@@ -132,7 +132,21 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 
             if(board[i][j] == player)
             {
-                insertDataToEndList2(currentPlayerMovesList,FindSingleSourceOptimalMove(sourceMovesTree) );
+                sourceMovesTree = FindSingleSourceMoves(board, src);
+                //countPlayersPieces++;
+                if (sourceMovesTree->source->next_moves[0] == NULL && sourceMovesTree->source->next_moves[1] == NULL)
+                {
+                    continue;
+                }
+                SingleSourceMovesList *singleList = FindSingleSourceOptimalMove(sourceMovesTree);
+                freeTree(sourceMovesTree);
+
+
+                MultipleSourceMovesListCell* newList = createNewMultiListNode(singleList, NULL);
+                //insertListToEndMultiList(&currentPlayerMovesList, singleList);
+                //insertListToEndMultiList(currentPlayerMovesList,singleList);
+
+                insertNodeToEndMultiList(currentPlayerMovesList, newList);
             }
         }
     }
