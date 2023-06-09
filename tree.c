@@ -11,6 +11,8 @@
 
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 {
+    bool captured = false;
+
     int row = 0, col = 0;
     getIndex(src,&row,&col);
 
@@ -21,13 +23,13 @@ SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src)
 
     int sourceSide = isBorT(board, row, col);
 
-    tree->source = buildTreeHelper(board, row, col, sourceSide, &totalCapturesSoFar);
+    tree->source = buildTreeHelper(board, row, col, sourceSide, &totalCapturesSoFar, &captured);
     return tree;
 
 }
 
-//chat
-SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures)
+
+SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures,bool *captured)
 {
     SingleSourceMovesTreeNode *node;
 
@@ -38,27 +40,50 @@ SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int so
 
     node = createNewTNode(board, row, col, totalCaptures);
 
+        if (*captured == true)
+        {
+            switch (sourceSide)
+            {
+                case B:
+                    if (board[row - 1][col - 1] != 'T' && board[row - 1][col + 1] != 'T')
+                    {
+                        return node;
+                    }
+
+                case T:
+                    if (board[row + 1][col - 1] != 'B' && board[row + 1][col + 1] != 'B')
+                    {
+                        return node;
+                    }
+            }
+        }
+
     switch (sourceSide)
     {
         case B:
             // Capture moves
             if (isInRange(row - 2, col - 2) && board[row - 1][col - 1] == 'T' && board[row - 2][col - 2] == ' ')
             {
-                node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, totalCaptures + 1);
+                unsigned short totalCapturesLeft = *(totalCaptures) + 1;
+                *captured = true;
+                node->next_moves[LEFT] = buildTreeHelper(board, row - 2, col - 2, sourceSide, &totalCapturesLeft, captured);
             }
             if (isInRange(row - 2, col + 2) && board[row - 1][col + 1] == 'T' && board[row - 2][col + 2] == ' ')
             {
                 unsigned short totalCapturesRight = *(totalCaptures) + 1;
-
-                node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, &totalCapturesRight);
+                *captured = true;
+                node->next_moves[RIGHT] = buildTreeHelper(board, row - 2, col + 2, sourceSide, &totalCapturesRight, captured);
             }
+            else
+            {
                 // Regular moves
                 if (isInRange(row - 1, col - 1) && board[row - 1][col - 1] == ' ')
                 {
                     //node->next_moves[LEFT] = buildTreeHelper(board, row - 1, col - 1, sourceSide, totalCaptures);
                     node->next_moves[LEFT] = createNewTNode(board, row - 1, col - 1, totalCaptures);
                 }
-                if (isInRange(row - 1, col + 1) && board[row - 1][col + 1] == ' ') {
+                if (isInRange(row - 1, col + 1) && board[row - 1][col + 1] == ' ')
+                {
                     //node->next_moves[RIGHT] = buildTreeHelper(board, row - 1, col + 1, sourceSide, totalCaptures);
                     node->next_moves[RIGHT] = createNewTNode(board, row - 1, col + 1, totalCaptures);
                 }
@@ -70,22 +95,29 @@ SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int so
             if (isInRange(row + 2, col + 2) && board[row + 1][col + 1] == 'B' && board[row + 2][col + 2] == ' ')
             {
                 unsigned short totalCapturesLeft = *(totalCaptures) + 1;
-                node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, &totalCapturesLeft);
+                *captured = true;
+                node->next_moves[LEFT] = buildTreeHelper(board, row + 2, col + 2, sourceSide, &totalCapturesLeft, captured);
             }
             if (isInRange(row + 2, col - 2) && board[row + 1][col - 1] == 'B' && board[row + 2][col - 2] == ' ')
             {
                 unsigned short totalCapturesRight = *(totalCaptures) + 1;
-                node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, &totalCapturesRight);
+                *captured = true;
+                node->next_moves[RIGHT] = buildTreeHelper(board, row + 2, col - 2, sourceSide, &totalCapturesRight, captured);
 
             }
                 // Regular moves
-            else if (isInRange(row + 1, col + 1) && board[row + 1][col + 1] == ' ')
+            else
             {
-                node->next_moves[LEFT] = buildTreeHelper(board, row + 1, col + 1, sourceSide, totalCaptures);
-            }
-            else if (isInRange(row + 1, col - 1) && board[row + 1][col - 1] == ' ')
-            {
-                node->next_moves[RIGHT] = buildTreeHelper(board, row + 1, col - 1, sourceSide, totalCaptures);
+                if (isInRange(row + 1, col + 1) && board[row + 1][col + 1] == ' ')
+                {
+                    //node->next_moves[LEFT] = buildTreeHelper(board, row + 1, col + 1, sourceSide, totalCaptures);
+                    node->next_moves[LEFT] = createNewTNode(board, row + 1, col + 1, totalCaptures);
+                }
+                if (isInRange(row + 1, col - 1) && board[row + 1][col - 1] == ' ')
+                {
+                    //node->next_moves[RIGHT] = buildTreeHelper(board, row + 1, col - 1, sourceSide, totalCaptures);
+                    node->next_moves[RIGHT] = createNewTNode(board, row + 1, col - 1, totalCaptures);
+                }
             }
             break;
 
@@ -146,6 +178,27 @@ void printTreeHelper(SingleSourceMovesTreeNode *root)
     }
 }
 
+int height(SingleSourceMovesTree *tr)
+{
+    return heightHelper(tr->source);
+}
+
+int heightHelper(SingleSourceMovesTreeNode *root)
+{
+    int heightLeft, heightRight;
+    if(root == NULL)
+        return -1;
+    else
+    {
+        //if (root->next_moves[LEFT] != NULL)
+            heightLeft = heightHelper(root->next_moves[LEFT]);
+
+        //if (root->next_moves[RIGHT] != NULL)
+            heightRight = heightHelper(root->next_moves[RIGHT]);
+
+        return 1 + max(heightLeft, heightRight);
+    }
+}
 
 // free all memory of a tree
 void freeTree(SingleSourceMovesTree * tr)
