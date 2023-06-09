@@ -34,14 +34,19 @@ typedef struct _SingleSourceMovesTree
 /*Functions*/
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src);
 SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short *total_captures_so_far);
-SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
+//SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
+SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures,bool *captured);
 
 void checkMemoryAllocationTree(SingleSourceMovesTreeNode *treeNode);
 
 void printTreeHelper(SingleSourceMovesTreeNode *root);
 void printTreeInorder(SingleSourceMovesTree *tr);
 
+int heightHelper(SingleSourceMovesTreeNode *root);
+int height(SingleSourceMovesTree *tr);
 
+void freeTree(SingleSourceMovesTree * tr);
+void freeTreeHelper(SingleSourceMovesTreeNode *root);
 
 
 #endif
