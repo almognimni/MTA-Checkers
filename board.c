@@ -1,5 +1,6 @@
 #include "board.h"
 
+
 void initializeBoard(Board board)
 {
     int i, j;
@@ -42,7 +43,9 @@ void printBoard(Board board)
         printf("|\n");
 
     }
-    printf("+-+-+-+-+-+-+-+-+-+\n");
+    printf("+-+-+-+-+-+-+-+-+-+\n\n");
+
+    fflush(stdout);
 }
 
 void checkMemoryAllocationPos(checkersPos *pos)
