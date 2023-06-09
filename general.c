@@ -47,15 +47,15 @@ void turn(Board board, Player player)
              highestCaptures = currentLenght;
              highestCapturesPlayer = player;
          }
-
     }
+
+
 
     executeMove(board, chosenList, player);
 }
 
 void executeMove(Board board, SingleSourceMovesList* executedMove, Player player)
 {
-    extern int totalMovesB, totalMovesT;
     checkersPos *startingPos, *endingPos, *currentPos, *nextPos;
     SingleSourceMovesListCell *current = executedMove->head;
 
@@ -64,7 +64,7 @@ void executeMove(Board board, SingleSourceMovesList* executedMove, Player player
 
     printf("%c%c->%c%c", startingPos->row,startingPos->col,endingPos->row, endingPos->col);
 
-    board[startingPos->row - 'A'][startingPos->col - '1'] = ' '; // delete the peice from its starting source
+    board[startingPos->row - 'A'][startingPos->col - '1'] = ' '; // delete the piece from its starting source
 
     while(current->next != NULL)
     {
@@ -76,14 +76,10 @@ void executeMove(Board board, SingleSourceMovesList* executedMove, Player player
 
         current = current->next;
 
-        if(player == 'B')
-            totalMovesB++;
-        else
-            totalMovesT++;
     }
+
+
     board[endingPos->row -'A'][endingPos->col -'1'] = player;
-
-
 }
 
 void capture(Board board, checkersPos *current, checkersPos *next)
@@ -93,6 +89,9 @@ void capture(Board board, checkersPos *current, checkersPos *next)
     getIndex(current, &currentRow, &currentCol);
     getIndex(next, &nextRow, &nextCol);
 
+    extern int totalMovesB, totalMovesT;
+
+
     capturedRow = (currentRow + nextRow) / 2;
     capturedCol = (currentCol + nextCol) / 2;
 
@@ -100,7 +99,46 @@ void capture(Board board, checkersPos *current, checkersPos *next)
 
 }
 
+SingleSourceMovesList *compareMoves(SingleSourceMovesList* lst1, SingleSourceMovesList* lst2, Player currentPlayer)
+{
+    switch (currentPlayer)
+    {
+        case 'B':
+            if ((lst1->head->position->row) < (lst2->head->position->row))
+                return lst1;
 
+            else if ((lst1->head->position->row) > (lst2->head->position->row))
+                return lst2;
+
+            else
+            {
+                if ((lst1->head->position->col) < (lst2->head->position->col))
+                {
+                    return lst1;
+                }
+                return lst2;
+            }
+
+        case 'T':
+            if ((lst1->head->position->row) > (lst2->head->position->row))
+                return lst1;
+
+            else if ((lst1->head->position->row) < (lst2->head->position->row))
+                return lst2;
+
+            else {
+                if ((lst1->head->position->col) > (lst2->head->position->col))
+                {
+                    return lst1;
+                }
+                return lst2;
+
+                default:
+                    printf("♫ ♪ How did you get here? ↕ § $ ↑ ◙ ♂ ▬ ◙ ▲ ◙ ♀  Were you lost? ♫ ♥ ♪");
+                exit(1);
+            }
+    }
+}
 
 int max(int a, int b)
 {
@@ -111,9 +149,11 @@ void PlayGame (Board board, Player starting_player)
 {
     bool ongoing = true;
 
+    printBoard(board);
+
     while (true)
     {
-        printf("\n%c's turn:\n", starting_player);
+        printf("%c's turn:\n", starting_player);
 
         turn(board, starting_player);
 
@@ -123,8 +163,17 @@ void PlayGame (Board board, Player starting_player)
 
         if (!ongoing)
         {
+            //printBoard(board);
             break;
         }
+
+        extern int totalMovesB,totalMovesT;
+
+        if(starting_player == 'B')
+            totalMovesB++;
+
+        else if(starting_player == 'T')
+            totalMovesT++;
 
         switchPlayer(&starting_player);
     }
@@ -200,7 +249,7 @@ void printStatistics(Board board, Player triumphantPlayer)
         printf("%C performed %d moves.", triumphantPlayer, totalMovesB);
 
     else if(triumphantPlayer == 'T')
-        printf("%C performed %d moves.", triumphantPlayer, totalMovesT);
+        printf("%C performed %d moves.\n", triumphantPlayer, totalMovesT);
 
     printf("%C performed the highest number of captures in a single move - %d", highestCapturesPlayer, highestCaptures);
 }
@@ -208,13 +257,13 @@ void printStatistics(Board board, Player triumphantPlayer)
 Player chooseStartingPlayer()
 {
     bool validChoice = false;
-    int choise;
+    int choice;
     printf("Enter 1 for T or 0 for B");
 
     do {
-        scanf("%d", &choise);
+        scanf("%d", &choice);
 
-        switch (choise)
+        switch (choice)
         {
             case 0:
                 return 'B';
@@ -226,6 +275,7 @@ Player chooseStartingPlayer()
                 printf("Invalid choice, please enter 0 or 1");
                 break;
         }
+
     } while (!validChoice);
 
 }
