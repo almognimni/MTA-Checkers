@@ -17,4 +17,9 @@ int findListLength(SingleSourceMovesList* singleList);
 void capture(Board board, checkersPos *current, checkersPos *next);
 void turn(Board board, Player player);
 int max(int a, int b);
+void PlayGame(Board board, Player starting_player);
+void switchPlayer(Player* currentPlayer);
+bool isOngoing (Board board);
+bool isOutOfPieces(Board board);
+void printStatistics(Board board, Player triumphantPlayer);
 #endif
