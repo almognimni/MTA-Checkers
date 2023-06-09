@@ -22,7 +22,8 @@ typedef struct _checkersPos
 
 typedef unsigned char Board [BOARD_SIZE][BOARD_SIZE];
 typedef unsigned char Player;
-void initializeBoard();
+
+void initializeBoard(Board board);
 void printBoard(Board board);
 void getIndex(checkersPos *src, int *row, int *col);
 int isBorT(Board board, int row, int col);
