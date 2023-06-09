@@ -1,6 +1,5 @@
 #include "general.h"
 
-
 //Question 4
 void turn(Board board, Player player)
 {
@@ -12,6 +11,7 @@ void turn(Board board, Player player)
     MultipleSourceMovesList *possibleMoves = FindAllPossiblePlayerMoves(board, player);
 
     SingleSourceMovesList *chosenList;
+
     SingleSourceMovesList *contender;
 
     MultipleSourceMovesListCell *current;
