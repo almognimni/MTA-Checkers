@@ -2,7 +2,6 @@
 #define PROJECT_TREE_H
 
 #include "board.h"
-#include "stdbool.h"
 
 #include <stdio.h>
 #include <stdlib.h>

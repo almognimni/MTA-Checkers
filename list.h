@@ -35,6 +35,7 @@ typedef struct _multipleSourceMovesList
 
 /*Functions*/
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
+
 MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player);
 
 void makeEmptyList(SingleSourceMovesList *lst);
@@ -48,7 +49,8 @@ bool isEmptyList(SingleSourceMovesList * lst);
 void printList(SingleSourceMovesList *list);
 
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
-void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
+//void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
+void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list ,Player currentPlayer); //Changed
 void printMultiList(MultipleSourceMovesList *MList);
 
 void makeEmptyMultiList(MultipleSourceMovesList *lst);

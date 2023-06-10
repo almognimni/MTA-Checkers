@@ -49,7 +49,7 @@ SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int so
                     {
                         return node;
                     }
-
+                    break; //NEW!!!!!
                 case T:
                     if (board[row + 1][col - 1] != 'B' && board[row + 1][col + 1] != 'B')
                     {
@@ -138,7 +138,8 @@ SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigne
     res = (SingleSourceMovesTreeNode*) malloc(sizeof (SingleSourceMovesTreeNode));
     checkMemoryAllocationTree(res);
 
-    memcpy(res->board, board, sizeof(board)); //???
+    memcpy(res->board, board, sizeof(unsigned char) * BOARD_SIZE * BOARD_SIZE);
+    //memcpy(res->board, board, sizeof(board)); //???
     res->total_captures_so_far = *(total_captures_so_far);
 
     res->pos = (checkersPos*) malloc (sizeof (checkersPos));

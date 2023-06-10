@@ -6,7 +6,7 @@ void turn(Board board, Player player)
     extern int highestCaptures;
     extern char highestCapturesPlayer;
 
-    int longestMoves = 0, currentLenght;
+    int currentLength, contenderLength; // CHANGED NAMES
 
     MultipleSourceMovesList *possibleMoves = FindAllPossiblePlayerMoves(board, player);
 
@@ -18,33 +18,35 @@ void turn(Board board, Player player)
     current = possibleMoves->head;
 
     chosenList = current->single_source_moves_list;
+    currentLength = chosenList->tail->captures; // NEW
+
 
     if(current->next == NULL)
     {
-        executeMove(board, current, player);
+        executeMove(board, chosenList, player); //changed current to chosen list
         return;
     }
 
     while(current->next != NULL)
     {
         contender = current->next->single_source_moves_list;
-        currentLenght = contender->tail->captures;
+        contenderLength = contender->tail->captures;
 
-         if(currentLenght > longestMoves)
+         if(contenderLength > currentLength)
          {
-             longestMoves = currentLenght;
+             currentLength = contenderLength;
              chosenList = contender;
          }
 
-         else if(currentLenght == longestMoves)
+         else if(contenderLength == currentLength)
          {
              chosenList = compareMoves(contender,chosenList, player);
          }
          current = current->next;
 
-         if(currentLenght > highestCaptures)
+         if(contenderLength > highestCaptures)
          {
-             highestCaptures = currentLenght;
+             highestCaptures = contenderLength;
              highestCapturesPlayer = player;
          }
     }
@@ -104,15 +106,15 @@ SingleSourceMovesList *compareMoves(SingleSourceMovesList* lst1, SingleSourceMov
     switch (currentPlayer)
     {
         case 'B':
-            if ((lst1->head->position->row) < (lst2->head->position->row))
+            if ((lst1->head->position->row) < (lst2->head->position->row)) // Prefer lower letters
                 return lst1;
 
             else if ((lst1->head->position->row) > (lst2->head->position->row))
                 return lst2;
 
-            else
+            else // at the same row
             {
-                if ((lst1->head->position->col) < (lst2->head->position->col))
+                if ((lst1->head->position->col) < (lst2->head->position->col)) // Prefer lower numbers
                 {
                     return lst1;
                 }
@@ -120,14 +122,15 @@ SingleSourceMovesList *compareMoves(SingleSourceMovesList* lst1, SingleSourceMov
             }
 
         case 'T':
-            if ((lst1->head->position->row) > (lst2->head->position->row))
+            if ((lst1->head->position->row) > (lst2->head->position->row)) // Prefer higher letters
                 return lst1;
 
             else if ((lst1->head->position->row) < (lst2->head->position->row))
                 return lst2;
 
-            else {
-                if ((lst1->head->position->col) > (lst2->head->position->col))
+            else
+            {
+                if ((lst1->head->position->col) > (lst2->head->position->col)) // Prefer higher numbers
                 {
                     return lst1;
                 }
@@ -161,12 +164,21 @@ void PlayGame (Board board, Player starting_player)
 
         ongoing = isOngoing(board);
 
+//        extern int totalMovesB,totalMovesT;
+//
+//        if(starting_player == 'B')
+//            totalMovesB++;
+//
+//        else if(starting_player == 'T')
+//            totalMovesT++;
+
         if (!ongoing)
         {
             //printBoard(board);
             break;
         }
 
+        //NEW - counters here
         extern int totalMovesB,totalMovesT;
 
         if(starting_player == 'B')
@@ -278,4 +290,12 @@ Player chooseStartingPlayer()
 
     } while (!validChoice);
 
+}
+
+Player findCurrentPlayer(Board board, checkersPos *currentPosition) //NEW
+{
+    Player res;
+    int row, col;
+    getIndex(currentPosition, &row, &col);
+    return board[row][col];
 }

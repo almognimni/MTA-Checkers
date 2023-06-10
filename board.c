@@ -1,6 +1,5 @@
 #include "board.h"
 
-
 void initializeBoard(Board board)
 {
     int i, j;
@@ -82,4 +81,17 @@ bool isInRange(int row, int col)
         return false;
     else
         return true;
+}
+
+void makeEmptyBoard(Board board) // NEW - > debugging
+{
+    int i, j;
+    for (i = 0; i < BOARD_SIZE; i++)
+    {
+        for (j = 0; j < BOARD_SIZE; j++)
+        {
+
+                board[i][j] = ' ';
+        }
+    }
 }

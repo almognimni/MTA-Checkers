@@ -19,7 +19,6 @@ typedef struct _checkersPos
     char row,col;
 }checkersPos;
 
-
 typedef unsigned char Board [BOARD_SIZE][BOARD_SIZE];
 typedef unsigned char Player;
 
@@ -28,7 +27,10 @@ void printBoard(Board board);
 void getIndex(checkersPos *src, int *row, int *col);
 int isBorT(Board board, int row, int col);
 bool isInRange(int row, int col);
+
 void checkMemoryAllocationPos(checkersPos *pos);
 
+
+void makeEmptyBoard(Board board); // NEW - Debug
+
 #endif
-//betty

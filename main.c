@@ -16,7 +16,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define STARTING_PLAYER 'B'
+#define STARTING_PLAYER 'T'
 
 int highestCaptures = 0;
 char highestCapturesPlayer = '0';
@@ -25,9 +25,16 @@ int totalMovesB = 0;
 
 int main()
 {
+    fflush(stdout);
     Board board;
 
     Player startingPlayer = STARTING_PLAYER;
+
+//    makeEmptyBoard(board);
+//
+//    board[0][2] = 'T';
+//    board[1][1] = 'B';
+//    board[3][3] = 'T';
 
     initializeBoard(board);
 

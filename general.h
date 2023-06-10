@@ -22,4 +22,5 @@ void switchPlayer(Player* currentPlayer);
 bool isOngoing (Board board);
 bool isOutOfPieces(Board board);
 void printStatistics(Board board, Player triumphantPlayer);
+Player findCurrentPlayer(Board board, checkersPos *currentPosition); //NEW
 #endif
