@@ -1,5 +1,6 @@
 #include "board.h"
 
+//This function takes a Board object as a parameter and initializes its values based on the rules of checkers
 void initializeBoard(Board board)
 {
     int i, j;
@@ -19,7 +20,7 @@ void initializeBoard(Board board)
     }
 }
 
-
+//This function takes a board type (chars array) and prints it
 void printBoard(Board board)
 {
     int i, j;
@@ -46,7 +47,7 @@ void printBoard(Board board)
 
     fflush(stdout);
 }
-
+//Takes a pointer and terminates the program if it's null
 void checkMemoryAllocationPos(checkersPos *pos)
 {
     if (pos == NULL)
@@ -56,16 +57,19 @@ void checkMemoryAllocationPos(checkersPos *pos)
     }
 }
 
-
+//Takes a src struct (2 chars) and converts them to integers
 void getIndex(checkersPos *src, int *row, int *col)
 {
     *row = (src->row - 'A');
     *col = (src->col - '1');
 }
 
+//This function checks the value of a specific cell in a 2D board represented by the board array.
+//If the value at the specified cell is 'B', the function returns the value 0.
+//If the value at the specified cell is 'T', the function returns the value 1.
 int isBorT(Board board, int row, int col)
 {
-    if (board[row][col] == 'B') //is string or char
+    if (board[row][col] == 'B')
     {
         return B;
     }
@@ -75,6 +79,7 @@ int isBorT(Board board, int row, int col)
     }
 }
 
+//The function checks if the given indices are valid for accessing elements in a 8x8 board.
 bool isInRange(int row, int col)
 {
     if (row < 0 || row >= 8 || col < 0 || col >= 8)
@@ -83,7 +88,9 @@ bool isInRange(int row, int col)
         return true;
 }
 
-void makeEmptyBoard(Board board) // NEW - > debugging
+//Debugging
+
+void makeEmptyBoard(Board board)
 {
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
@@ -91,7 +98,7 @@ void makeEmptyBoard(Board board) // NEW - > debugging
         for (j = 0; j < BOARD_SIZE; j++)
         {
 
-                board[i][j] = ' ';
+            board[i][j] = ' ';
         }
     }
 }

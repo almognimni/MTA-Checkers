@@ -1,11 +1,13 @@
-
 #include "list.h"
-#include "general.h" //NEW
+#include "general.h"
 
 //Question 2
+//Input: A pointer to a SingleSourceMovesTree data structure.
+//Function: This function computes the optimal move in the given moves tree. It traverses the tree, keeping track of the optimal move using a helper function.
+//Return: Returns a pointer to a SingleSourceMovesList data structure that contains the optimal move(s).
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree)
 {
-    Player currentPlayer = findCurrentPlayer(moves_tree->source->board, moves_tree->source->pos); //NEW
+    Player currentPlayer = findCurrentPlayer(moves_tree->source->board, moves_tree->source->pos);
 
     SingleSourceMovesList *optimalMoveList;
 
@@ -14,13 +16,15 @@ SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_
 
     makeEmptyList(optimalMoveList);
 
-    FindOptimalMoveHelper(moves_tree->source,optimalMoveList, currentPlayer);
+    FindOptimalMoveHelper(moves_tree->source,optimalMoveList,currentPlayer);
 
     return optimalMoveList;
-    //Free tree
+
 }
 
-void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list ,Player currentPlayer) //Changed
+/*Input: A pointer to a SingleSourceMovesTreeNode data structure and a pointer to a SingleSourceMovesList.
+Function: This helper function is used by the FindSingleSourceOptimalMove function to traverse the tree and insert each node into the list.*/
+void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list ,Player currentPlayer)
 {
     int heightRight, heightLeft;
 
@@ -35,10 +39,10 @@ void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMove
         return;
 
     else if (treeNode->next_moves[LEFT] == NULL)
-        return FindOptimalMoveHelper(treeNode->next_moves[RIGHT], list, currentPlayer); //CHANGED
+        return FindOptimalMoveHelper(treeNode->next_moves[RIGHT], list, currentPlayer);
 
     else if (treeNode->next_moves[RIGHT] == NULL)
-        return FindOptimalMoveHelper(treeNode->next_moves[LEFT], list, currentPlayer); //CHANGED
+        return FindOptimalMoveHelper(treeNode->next_moves[LEFT], list, currentPlayer);
 
 
     heightLeft = heightHelper(treeNode->next_moves[LEFT]);
@@ -46,12 +50,12 @@ void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMove
 
     if (heightRight > heightLeft)
     {
-        return FindOptimalMoveHelper(treeNode->next_moves[RIGHT], list, currentPlayer); //CHANGED
+        return FindOptimalMoveHelper(treeNode->next_moves[RIGHT], list, currentPlayer);
     }
 
-    if (heightLeft > heightRight) //Changed < to >
+    if (heightLeft > heightRight)
     {
-        return FindOptimalMoveHelper(treeNode->next_moves[LEFT], list, currentPlayer); //CHANGED
+        return FindOptimalMoveHelper(treeNode->next_moves[LEFT], list, currentPlayer);
     }
 
     else //None is NULL and they are the same length - We activate the rule from page 2 NEW
@@ -67,8 +71,8 @@ void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMove
     }
 }
 
-
-///Single
+/*Input: A pointer to a SingleSourceMovesList and a pointer to a SingleSourceMovesTreeNode.
+Function: This function inserts a new list cell to the end of the list. The list cell is created from the provided treeNode.*/
 void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *treeNode)
 {
     SingleSourceMovesListCell *newTail;
@@ -76,6 +80,9 @@ void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *t
     insertNodeToEndList(lst, newTail);
 }
 
+/*Input: A pointer to a SingleSourceMovesTreeNode and a pointer to a SingleSourceMovesListCell representing the next node.
+Function: This function creates a new SingleSourceMovesListCell from a SingleSourceMovesTreeNode.
+Return: Returns a pointer to the newly created SingleSourceMovesListCell.*/
 SingleSourceMovesListCell* createNewListNode(SingleSourceMovesTreeNode *treeNode, SingleSourceMovesListCell *next)
 {
     SingleSourceMovesListCell * res;
@@ -90,6 +97,9 @@ SingleSourceMovesListCell* createNewListNode(SingleSourceMovesTreeNode *treeNode
     return res;
 }
 
+/*Input: This function takes a pointer to a SingleSourceMovesList and a pointer to a SingleSourceMovesListCell.
+Function: This function inserts a new node (represented by SingleSourceMovesListCell) at the end of the given list (SingleSourceMovesList). If the list is empty, the new node becomes the head and the tail of the list. If the list is not empty, the new node is added to the end of the list, and the tail of the list is updated to point to the new node.
+Return: modifies the SingleSourceMovesList in-place.*/
 void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell *tail)
 {
     if (lst == NULL)
@@ -106,8 +116,11 @@ void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell 
     tail->next = NULL;
 }
 
-
 //Question3
+
+//Input: A Board data structure representing the game state, and a Player enum representing the current player.
+//Function: This function computes all the possible moves for a given player in the given board state. It iterates over each board square, checks if the player can move from that square, and if so, it computes the optimal move from that square and adds it to the player's moves list.
+//Return: Returns a pointer to a MultipleSourceMovesList that contains all the optimal moves for the given player.
 MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 {
     MultipleSourceMovesList *currentPlayerMovesList;
@@ -116,7 +129,6 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
     src = (checkersPos *) malloc(sizeof (checkersPos));
     checkMemoryAllocationPos(src);
 
-    //int countPlayersPieces = 0;
 
     currentPlayerMovesList = (MultipleSourceMovesList *) malloc (sizeof (MultipleSourceMovesList));
     makeEmptyMultiList(currentPlayerMovesList);
@@ -135,7 +147,7 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
             if(board[i][j] == player)
             {
                 sourceMovesTree = FindSingleSourceMoves(board, src);
-                //countPlayersPieces++;
+
                 if (sourceMovesTree->source->next_moves[0] == NULL && sourceMovesTree->source->next_moves[1] == NULL)
                 {
                     continue;
@@ -145,26 +157,19 @@ MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player)
 
 
                 MultipleSourceMovesListCell* newList = createNewMultiListNode(singleList, NULL);
-                //insertListToEndMultiList(&currentPlayerMovesList, singleList);
-                //insertListToEndMultiList(currentPlayerMovesList,singleList);
 
                 insertNodeToEndMultiList(currentPlayerMovesList, newList);
             }
         }
     }
-    //currentPlayerMovesList = realloc(currentPlayerMovesList,  sizeof(MultipleSourceMovesList*) * countPlayersPieces);
-    //add free position
-    return currentPlayerMovesList; //Free list in main
+    return currentPlayerMovesList;
 }
 
-///////Multi
-void insertListToEndMultiList(MultipleSourceMovesList **dest, SingleSourceMovesList *inserted)
-{
-    MultipleSourceMovesListCell *newTail;
-    newTail = createNewMultiListNode(inserted, NULL);
-    insertNodeToEndMultiList(dest, newTail);
-}
 
+
+//Input: A pointer to a SingleSourceMovesList and a pointer to the next MultipleSourceMovesListCell.
+//Function: This function creates a new MultipleSourceMovesListCell that contains the given list and points to the given next cell.
+//Return: Returns a pointer to the newly created MultipleSourceMovesListCell.
 MultipleSourceMovesListCell *createNewMultiListNode(SingleSourceMovesList *insertedList, MultipleSourceMovesListCell *next)
 {
     MultipleSourceMovesListCell * res;
@@ -191,18 +196,109 @@ void insertNodeToEndMultiList(MultipleSourceMovesList* lst, MultipleSourceMovesL
     newTail->next = NULL;
 }
 
-void printList(SingleSourceMovesList *list)
+//Input: A pointer to a SingleSourceMovesList.
+//Function: This function initializes the provided list to an empty state.
+void makeEmptyList(SingleSourceMovesList *lst)
 {
-    SingleSourceMovesListCell* res;
-    res = list->head;
+    lst->head = NULL;
+    lst->tail = NULL;
+}
 
-    while (res != NULL)
+void makeEmptyMultiList(MultipleSourceMovesList *lst)
+{
+    lst->head= NULL;
+    lst->tail = NULL;
+}
+
+//Input: A pointer to a SingleSourceMovesList.
+//Function: This function checks if the provided list is empty or not.
+//Return: Returns a boolean, true if the list is empty, false otherwise.
+bool isEmptyList(SingleSourceMovesList * lst)
+{
+    if (lst->head == NULL)
+        return true;
+    else
+        return false;
+}
+
+//Input: A pointer to a MultipleSourceMovesList.
+//Function: This function checks if the provided list is empty or not.
+//Return: Returns a boolean, true if the list is empty, false otherwise.
+bool isEmptyMultiList(MultipleSourceMovesList *lst)
+{
+    if (lst->head == NULL)
+        return true;
+    else
+        return false;
+}
+
+//This function checks if the allocation was successful.
+void checkMemoryAllocation(SingleSourceMovesListCell * listCell)
+{
+    if (listCell == NULL)
     {
-        printf("%c%c <> %d", res->position->row ,res->position->col, res->captures );
-        res = res->next;
+        printf("Memory allocation error!!!\n");
+        exit(1);
     }
 }
 
+//This function checks if the allocation was successful.
+void checkMemoryAllocationList(SingleSourceMovesList * listCell)
+{
+    if (listCell == NULL)
+    {
+        printf("Memory allocation error!!!\n");
+        exit(1);
+    }
+}
+
+//Input: A pointer to a MultipleSourceMovesListCell.
+//Function: This function frees the memory occupied by the given MultipleSourceMovesListCell.
+void freeMultipleSourceMovesListCell(MultipleSourceMovesListCell *node)
+{
+    free(node->single_source_moves_list);
+    free(node);
+}
+
+//Input: A pointer to a MultipleSourceMovesListList.
+//Function: This function frees the memory occupied by the given MultipleSourceMovesListCell.
+void freeMultipleSourceMovesList(MultipleSourceMovesList* lst)
+{
+    MultipleSourceMovesListCell *curr = lst->head;
+    MultipleSourceMovesListCell *next = NULL;
+    while (curr != NULL)
+    {
+        next = curr->next;
+        freeMultipleSourceMovesListCell(curr);
+        curr = next;
+    }
+}
+
+/*Input: A pointer to a SingleSourceMovesListCell.
+Function: This function frees the memory occupied by the given MultipleSourceMovesListCell.*/
+void freeSingleSourceMovesListCell(SingleSourceMovesListCell *node)
+{
+    free(node->position);
+    free(node);
+}
+
+/*Input: A pointer to a SingleSourceMovesList.
+Function: This function frees the memory occupied by the given MultipleSourceMovesListCell.*/
+void freeSingleSourceMovesList(SingleSourceMovesList* lst)
+{
+    SingleSourceMovesListCell *curr = lst->head;
+    SingleSourceMovesListCell *next = NULL;
+
+    while (curr != NULL)
+    {
+        next = curr->next;
+        freeSingleSourceMovesListCell(curr);
+        curr = next;
+    }
+}
+
+
+//Debugging
 void printMultiList(MultipleSourceMovesList *MList)
 {
     MultipleSourceMovesListCell* curr = MList->head;
@@ -217,49 +313,15 @@ void printMultiList(MultipleSourceMovesList *MList)
     printf("\n");
 }
 
-void makeEmptyList(SingleSourceMovesList *lst)
-{
-    lst->head = NULL;
-    lst->tail = NULL;
-}
 
-void makeEmptyMultiList(MultipleSourceMovesList *lst)
+void printList(SingleSourceMovesList *list)
 {
-    lst->head= NULL;
-    lst->tail = NULL;
-}
+    SingleSourceMovesListCell* res;
+    res = list->head;
 
-bool isEmptyList(SingleSourceMovesList * lst)
-{
-    if (lst->head == NULL)
-        return true;
-    else
-        return false;
-}
-
-bool isEmptyMultiList(MultipleSourceMovesList *lst)
-{
-    if (lst->head == NULL)
-        return true;
-    else
-        return false;
-}
-
-void checkMemoryAllocation(SingleSourceMovesListCell * listCell)
-{
-    if (listCell == NULL)
+    while (res != NULL)
     {
-        printf("Memory allocation error!!!\n");
-        exit(1);
+        printf("%c%c <> %d", res->position->row ,res->position->col, res->captures );
+        res = res->next;
     }
 }
-
-void checkMemoryAllocationList(SingleSourceMovesList * listCell)
-{
-    if (listCell == NULL)
-    {
-        printf("Memory allocation error!!!\n");
-        exit(1);
-    }
-}
-

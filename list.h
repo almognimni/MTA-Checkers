@@ -4,6 +4,9 @@
 #include "board.h"
 #include "tree.h"
 
+/*Definitions*/
+
+/*Single list*/
 typedef struct _SingleSourceMovesListCell
 {
     checkersPos *position;
@@ -18,8 +21,8 @@ typedef struct _SingleSourceMovesList
     SingleSourceMovesListCell *tail;
 }SingleSourceMovesList;
 
-//_____________________________________________
 
+/*Multiple source lists*/
 typedef struct _multipleSourceMovesListCell
 {
     SingleSourceMovesList *single_source_moves_list;
@@ -34,29 +37,35 @@ typedef struct _multipleSourceMovesList
 }MultipleSourceMovesList;
 
 /*Functions*/
+
+/*Single source functions */
+//Question 2
 SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
-
-MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player);
-
-void makeEmptyList(SingleSourceMovesList *lst);
-void checkMemoryAllocation(SingleSourceMovesListCell * listCell);
-void checkMemoryAllocationList(SingleSourceMovesList * listCell);
+void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list ,Player currentPlayer);
 
 SingleSourceMovesListCell *createNewListNode(SingleSourceMovesTreeNode *treeNode, SingleSourceMovesListCell *next);
 void insertDataToEndList(SingleSourceMovesList *lst,SingleSourceMovesTreeNode *treeNode);
 void insertNodeToEndList(SingleSourceMovesList * lst, SingleSourceMovesListCell *tail);
-bool isEmptyList(SingleSourceMovesList * lst);
-void printList(SingleSourceMovesList *list);
 
-SingleSourceMovesList *FindSingleSourceOptimalMove(SingleSourceMovesTree *moves_tree);
-//void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list);
-void FindOptimalMoveHelper(SingleSourceMovesTreeNode *treeNode ,SingleSourceMovesList *list ,Player currentPlayer); //Changed
-void printMultiList(MultipleSourceMovesList *MList);
+bool isEmptyList(SingleSourceMovesList * lst);
+void makeEmptyList(SingleSourceMovesList *lst);
+
+void checkMemoryAllocation(SingleSourceMovesListCell * listCell);
+void checkMemoryAllocationList(SingleSourceMovesList * listCell);
+
+//Question3
+/*Multiple source lists*/
+MultipleSourceMovesList *FindAllPossiblePlayerMoves(Board board, Player player);
 
 void makeEmptyMultiList(MultipleSourceMovesList *lst);
 bool isEmptyMultiList(MultipleSourceMovesList *lst);
 
-void insertListToEndMultiList(MultipleSourceMovesList **dest, SingleSourceMovesList *inserted);
 MultipleSourceMovesListCell *createNewMultiListNode(SingleSourceMovesList *listCell, MultipleSourceMovesListCell *next);
 void insertNodeToEndMultiList(MultipleSourceMovesList* lst, MultipleSourceMovesListCell *newTail);
+
+/*For debugging*/
+void printList(SingleSourceMovesList *list);
+void printMultiList(MultipleSourceMovesList *MList);
+
+
 #endif

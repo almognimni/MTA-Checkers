@@ -1,6 +1,8 @@
 #ifndef PROJECT_TREE_H
 #define PROJECT_TREE_H
 
+/*Libraries*/
+
 #include "board.h"
 
 #include <stdio.h>
@@ -8,6 +10,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+/*Definitions*/
 #define B 0
 #define T 1
 
@@ -15,7 +18,6 @@
 #define RIGHT 1
 
 
-/* Data structs */
 typedef struct _SingleSourceMovesTreeNode
 {
     Board board;
@@ -31,22 +33,20 @@ typedef struct _SingleSourceMovesTree
 }SingleSourceMovesTree;
 
 /*Functions*/
+
 SingleSourceMovesTree *FindSingleSourceMoves(Board board, checkersPos *src);
 SingleSourceMovesTreeNode* createNewTNode(Board board, int row, int col, unsigned short *total_captures_so_far);
-//SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures);
 SingleSourceMovesTreeNode* buildTreeHelper(Board board, int row, int col, int sourceSide, unsigned short* totalCaptures,bool *captured);
 
-void checkMemoryAllocationTree(SingleSourceMovesTreeNode *treeNode);
+void checkMemoryAllocationTree(SingleSourceMovesTreeNode *treeNode); //VOID
 
 void printTreeHelper(SingleSourceMovesTreeNode *root);
-void printTreeInorder(SingleSourceMovesTree *tr);
 
 int heightHelper(SingleSourceMovesTreeNode *root);
 int height(SingleSourceMovesTree *tr);
 
 void freeTree(SingleSourceMovesTree * tr);
 void freeTreeHelper(SingleSourceMovesTreeNode *root);
-
 
 #endif
 
